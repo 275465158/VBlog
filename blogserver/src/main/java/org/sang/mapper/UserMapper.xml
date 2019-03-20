@@ -6,6 +6,9 @@
     <select id="loadUserByUsername" resultType="org.sang.bean.User">
         SELECT * FROM user WHERE username=#{username}
     </select>
+    <select id="getAllUser" resultType="org.sang.bean.User">
+        SELECT * FROM user
+    </select>
     <insert id="reg" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user set username=#{username},password=#{password},nickname=#{nickname}
     </insert>

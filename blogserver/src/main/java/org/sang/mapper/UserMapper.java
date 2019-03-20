@@ -20,6 +20,7 @@ public interface UserMapper {
     int updateUserEmail(@Param("email") String email, @Param("id") Long id);
 
     List<User> getUserByNickname(@Param("nickname") String nickname);
+    List<User> getAllUser();
 
     List<Role> getAllRole();
 

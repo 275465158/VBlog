@@ -73,6 +73,10 @@ public class UserService implements UserDetailsService {
         List<User> list = userMapper.getUserByNickname(nickname);
         return list;
     }
+    public List<User> getAllUser() {
+        List<User> list = userMapper.getAllUser();
+        return list;
+    }
 
     public List<Role> getAllRole() {
         return userMapper.getAllRole();
@@ -87,8 +91,13 @@ public class UserService implements UserDetailsService {
     }
 
     public int updateUserRoles(Long[] rids, Long id) {
-        int i = userMapper.deleteUserRolesByUid(id);
-        return userMapper.setUserRoles(rids, id);
+
+        if (rids.length==0){
+            return 0;
+        }else {
+            int i = userMapper.deleteUserRolesByUid(id);
+            return userMapper.setUserRoles(rids, id);
+        }
     }
 
     public User getUserById(Long id) {

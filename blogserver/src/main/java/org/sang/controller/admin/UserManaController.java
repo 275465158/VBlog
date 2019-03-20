@@ -56,10 +56,11 @@ public class UserManaController {
 
     @RequestMapping(value = "/user/role", method = RequestMethod.PUT)
     public RespBean updateUserRoles(Long[] rids, Long id) {
-        if (userService.updateUserRoles(rids, id) == rids.length) {
+        int updateResult=userService.updateUserRoles(rids, id);
+        if (rids.length!=0&&updateResult == rids.length) {
             return new RespBean("success", "更新成功!");
         } else {
-            return new RespBean("error", "更新失败!");
+            return new RespBean("error", "更新失败!每个用户最少拥有一个角色");
         }
     }
 }
