@@ -8,6 +8,9 @@ import DataCharts from '@/components/DataCharts'
 import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
+import VisitorPage from '@/components/VisitorPage'
+import VisitorDetail from '@/components/VisitorDetail'
+
 
 Vue.use(Router)
 
@@ -15,6 +18,23 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect:'/visitorPage',
+      hidden: true,      
+    },
+    {
+      path: '/visitorPage',
+      name: '游客',
+      hidden: true,
+      component: VisitorPage
+    },
+    {
+      path: '/VisitorDetail',
+      name: '游客文章明细',
+      hidden: true,
+      component: VisitorDetail
+    },
+    {
+      path: '/login',
       name: '登录',
       hidden: true,
       component: Login

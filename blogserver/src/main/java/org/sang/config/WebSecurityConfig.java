@@ -1,5 +1,6 @@
 package org.sang.config;
 
+import org.sang.exceptions.CommonBusinessException;
 import org.sang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.ServletException;
@@ -29,7 +31,6 @@ import java.io.PrintWriter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(new PasswordEncoder() {
@@ -45,7 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
              */
             @Override
             public boolean matches(CharSequence charSequence, String s) {
-                return s.equals(DigestUtils.md5DigestAsHex(charSequence.toString().getBytes()));
+                if (s.equals(DigestUtils.md5DigestAsHex(charSequence.toString().getBytes()))){
+                    return true;
+                }else {
+                    throw new CommonBusinessException("密码错误啦");
+                }
             }
         });
     }
@@ -55,17 +60,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/category/all").authenticated()
                 .antMatchers("/admin/**","/reg").hasRole("超级管理员")///admin/**的URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")
+
+                .antMatchers("/hello","/reg").permitAll()
                 .anyRequest().authenticated()//其他的路径都是登录后即可访问
-                .and().formLogin().loginPage("/login_page").successHandler(new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                httpServletResponse.setContentType("application/json;charset=utf-8");
-                PrintWriter out = httpServletResponse.getWriter();
-                out.write("{\"status\":\"success\",\"msg\":\"登录成功\"}");
-                out.flush();
-                out.close();
-            }
-        })
+
+                .and().formLogin().loginPage("/login_page")
+//                .successHandler(new AuthenticationSuccessHandler() {
+//            @Override
+//            public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+//                httpServletResponse.setContentType("application/json;charset=utf-8");
+//                PrintWriter out = httpServletResponse.getWriter();
+//                out.write("{\"status\":\"success\",\"msg\":\"登录成功\"}");
+//                out.flush();
+//                out.close();
+//            }
+//        })
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
@@ -75,10 +84,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         out.flush();
                         out.close();
                     }
-                }).loginProcessingUrl("/login")
+                })
+                .loginProcessingUrl("/login")
                 .usernameParameter("username").passwordParameter("password").permitAll()
-                .and().logout().permitAll().and().csrf().disable().exceptionHandling().accessDeniedHandler(getAccessDeniedHandler());
-    }
+                .and().logout().permitAll()
+                .and().csrf()
+                .disable().exceptionHandling().accessDeniedHandler(getAccessDeniedHandler());
+    };
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {

@@ -16,15 +16,15 @@ public class LoginRegController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/login_error")
-    public RespBean loginError() {
-        return new RespBean("error", "登录失败!");
-    }
-
-    @RequestMapping("/login_success")
-    public RespBean loginSuccess() {
-        return new RespBean("success", "登录成功!");
-    }
+//    @RequestMapping("/login_error")
+//    public RespBean loginError() {
+//        return new RespBean("error", "登录失败!");
+//    }
+//
+//    @RequestMapping("/login_success")
+//    public RespBean loginSuccess() {
+//        return new RespBean("success", "登录成功!");
+//    }
 
     /**
      * 如果自动跳转到这个页面，说明用户未登录，返回相应的提示即可

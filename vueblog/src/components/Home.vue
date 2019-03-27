@@ -33,10 +33,9 @@
           >
             <el-submenu
               :index="index+''"
-              v-if="item.children.length>1"
               :key="index"
             >
-              <template slot="title">
+            <template slot="title">
                 <i :class="item.iconCls"></i>
                 <span>{{item.name}}</span>
               </template>
@@ -49,12 +48,6 @@
                 {{child.name}}
               </el-menu-item>
             </el-submenu>
-            <template v-else>
-              <el-menu-item :index="item.children[0].path">
-                <i :class="item.children[0].iconCls"></i>
-                <span slot="title">{{item.children[0].name}}</span>
-              </el-menu-item>
-            </template>
           </template>
         </el-menu>
       </el-aside>

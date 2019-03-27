@@ -23,6 +23,12 @@ public class User implements UserDetails {
     private String userface;
     private Timestamp regTime;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    public User() {}
+
     public Timestamp getRegTime() {
         return regTime;
     }
