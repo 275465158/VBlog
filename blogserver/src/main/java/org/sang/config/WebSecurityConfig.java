@@ -80,7 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
                         PrintWriter out = httpServletResponse.getWriter();
-                        out.write("{\"status\":\"error\",\"msg\":\"登录失败\"}");
+                        out.write(e.toString());
+//                        out.write("{\"status\":\"error\",\"msg\":\"登录失败\"}");
                         out.flush();
                         out.close();
                     }

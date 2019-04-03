@@ -16,8 +16,12 @@
         <el-form-item style="width: 100%">
           <el-button type="primary" @click.native.prevent="submitClick" style="width: 100%">登录</el-button>
         </el-form-item>
+        <!-- <el-form-item prop="test">
+          <el-input type="text" v-model="session" auto-complete="off" placeholder="账号"></el-input>
+        </el-form-item> -->
 
         </el-form>
+        
     </el-tab-pane>
     <el-tab-pane label="用户注册">
       <el-form :rules="rules2" ref="regForm" :model="regForm" class="login-container" label-position="left"
@@ -80,8 +84,14 @@
           telephone:'',
           verification:'',
         },
-        loading: false
+        loading: false,
+        session:''
       }
+    },
+    created(){
+      // var session = ${session.SPRING_SECURITY_LAST_EXCEPTION.message};
+      // console.log("session",session);
+      
     },
     methods: {
       submitClick: function () {
@@ -104,7 +114,8 @@
               _this.$router.replace({path: '/home'});
             } else {
               // _this.$alert('登录失败!', '失败!');
-              console.log(resp);
+              // console.log(resp);
+              this.$message({type: 'error', message:resp.data })
               
             }
           } else {
