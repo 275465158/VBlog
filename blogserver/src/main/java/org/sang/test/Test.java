@@ -1,10 +1,7 @@
 package org.sang.test;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.sang.BlogserverApplication;
-import org.sang.MessageResourceExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -14,7 +11,7 @@ import javax.annotation.Resource;
 @SpringBootTest(classes = BlogserverApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class Test {
     @Resource(name = "messageSource")
-    private MessageResourceExtension messageResourceExtension;
+//    private MessageResourceExtension messageResourceExtension;
 //    @Before
 //    public void init() {
 //        System.out.println("开始测试-----------------");

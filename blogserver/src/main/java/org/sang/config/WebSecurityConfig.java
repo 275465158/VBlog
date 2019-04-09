@@ -46,11 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
              */
             @Override
             public boolean matches(CharSequence charSequence, String s) {
-                if (s.equals(DigestUtils.md5DigestAsHex(charSequence.toString().getBytes()))){
-                    return true;
-                }else {
-                    throw new CommonBusinessException("密码错误啦");
-                }
+                return s.equals(DigestUtils.md5DigestAsHex(charSequence.toString().getBytes()));
             }
         });
     }
@@ -59,12 +55,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/category/all").authenticated()
-                .antMatchers("/admin/**","/reg").hasRole("超级管理员")///admin/**的URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")
-
+                .antMatchers("/admin/**").hasRole("超级管理员")///admin/**的URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")
                 .antMatchers("/hello","/reg").permitAll()
                 .anyRequest().authenticated()//其他的路径都是登录后即可访问
+                .and().formLogin().loginPage("/login_page")//这里好像没什么用
 
-                .and().formLogin().loginPage("/login_page")
 //                .successHandler(new AuthenticationSuccessHandler() {
 //            @Override
 //            public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {

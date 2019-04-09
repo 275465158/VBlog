@@ -10,6 +10,11 @@ import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
 import VisitorPage from '@/components/VisitorPage'
 import VisitorDetail from '@/components/VisitorDetail'
+import Test from '@/components/Test'
+import Blogroll from '@/components/Blogroll'
+import animedemo from '@/components/animedemo'
+
+
 
 
 Vue.use(Router)
@@ -18,8 +23,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect:'/visitorPage',
-      hidden: true,      
+      redirect: '/visitorPage',
+      hidden: true,
     },
     {
       path: '/visitorPage',
@@ -27,6 +32,24 @@ export default new Router({
       hidden: true,
       component: VisitorPage
     },
+    {
+      path: '/animedemo',
+      name: '测试',
+      hidden: true,
+      component: animedemo
+    },
+    {
+      path: '/Test',
+      name: '测试',
+      hidden: true,
+      component: Test
+    }, {
+      path: '/Blogroll',
+      name: '友情链接',
+      hidden: true,
+      component: Blogroll
+    },
+
     {
       path: '/VisitorDetail',
       name: '游客文章明细',
