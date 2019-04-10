@@ -60,16 +60,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()//其他的路径都是登录后即可访问
                 .and().formLogin().loginPage("/login_page")//这里好像没什么用
 
-//                .successHandler(new AuthenticationSuccessHandler() {
-//            @Override
-//            public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-//                httpServletResponse.setContentType("application/json;charset=utf-8");
-//                PrintWriter out = httpServletResponse.getWriter();
-//                out.write("{\"status\":\"success\",\"msg\":\"登录成功\"}");
-//                out.flush();
-//                out.close();
-//            }
-//        })
+                .successHandler(new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                httpServletResponse.setContentType("application/json;charset=utf-8");
+                PrintWriter out = httpServletResponse.getWriter();
+                out.write("{\"status\":\"success\",\"msg\":\"登录成功\"}");
+                out.flush();
+                out.close();
+            }
+        })
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {

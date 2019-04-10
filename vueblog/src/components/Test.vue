@@ -1,5 +1,5 @@
 <template>
-  <div id="ball">https://codepen.io/tomrishworth/pen/VbbMgV</div>
+  <div id="ball"></div>
   <!-- <canvas id="c"></canvas> -->
 </template>
 
@@ -42,11 +42,10 @@ export default {
   height: 100vh;
   cursor: none;
 }
-.ball {
+#ball {
   display: block;
   width: 100vw;
-  height: 100px;
-  background-color: aqua;
+  background-image: url("../assets/theWanderingEarth.jpg");
   cursor: none;
 }
 </style>

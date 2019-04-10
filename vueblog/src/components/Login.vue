@@ -1,15 +1,35 @@
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
+  <el-tabs v-model="activeName" @tab-click="handleClick" style="height:100%">
     <el-tab-pane label="系统登录">
+      <vue-particles
+        class="lizi particles"
+        color="#000"
+        :particleOpacity="0.7"
+        :particlesNumber="60"
+        shapeType="circle"
+        :particleSize="4"
+        linesColor="#fff"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="2"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+      ></vue-particles>
+
       <el-form
         :rules="rules"
         :model="loginForm"
+        class="isSuspend login-container"
         ref="loginForm"
-        class="login-container"
         label-position="left"
         label-width="0px"
         v-loading="loading"
       >
+        <!-- :class="[isSuspend,login-container]" -->
         <h3 class="login_title">系统登录</h3>
         <el-form-item prop="username">
           <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="账号"></el-input>
@@ -152,8 +172,11 @@ export default {
 
           this.loading = true;
           if (formName === "loginForm") {
+            let url = "/login";
+            // console.log(url, "url");
+
             postRequest(
-              "/login",
+              url,
               // this.loginForm
               {
                 username: this.loginForm.username,
@@ -221,5 +244,15 @@ export default {
 .login_remember {
   margin: 0px 0px 35px 0px;
   text-align: left;
+}
+.isSuspend {
+  background: transparent;
+  top: 0;
+  left: 40%;
+  width: 20%;
+  position: absolute;
+}
+.particles {
+  width: 100%;
 }
 </style>
