@@ -1,5 +1,9 @@
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick" style="height:100%">
+  <el-tabs
+    v-model="activeName"
+    @tab-click="handleClick"
+    style="height:100%"
+  >
     <el-tab-pane label="系统登录">
       <vue-particles
         class="lizi particles"
@@ -32,7 +36,12 @@
         <!-- :class="[isSuspend,login-container]" -->
         <h3 class="login_title">系统登录</h3>
         <el-form-item prop="username">
-          <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="账号"></el-input>
+          <el-input
+            type="text"
+            v-model="loginForm.username"
+            auto-complete="off"
+            placeholder="账号"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
@@ -42,9 +51,17 @@
             placeholder="密码"
           ></el-input>
         </el-form-item>
-        <el-checkbox class="login_remember" v-model="checked" label-position="left">记住密码</el-checkbox>
+        <el-checkbox
+          class="login_remember"
+          v-model="checked"
+          label-position="left"
+        >记住密码</el-checkbox>
         <el-form-item style="width: 100%">
-          <el-button type="primary" @click="submitForm('loginForm')" style="width: 100%">登录</el-button>
+          <el-button
+            type="primary"
+            @click="submitForm('loginForm')"
+            style="width: 100%"
+          >登录</el-button>
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -60,14 +77,29 @@
       >
         <h3 class="login_title">用户注册</h3>
         <el-form-item prop="nickname">
-          <el-input type="text" v-model="regForm.nickname" auto-complete="off" placeholder="博客名称"></el-input>
+          <el-input
+            type="text"
+            v-model="regForm.nickname"
+            auto-complete="off"
+            placeholder="博客名称"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="username">
-          <el-input type="text" v-model="regForm.username" auto-complete="off" placeholder="账号"></el-input>
+          <el-input
+            type="text"
+            v-model="regForm.username"
+            auto-complete="off"
+            placeholder="账号"
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="password">
-          <el-input type="password" v-model="regForm.password" auto-complete="off" placeholder="密码"></el-input>
+          <el-input
+            type="password"
+            v-model="regForm.password"
+            auto-complete="off"
+            placeholder="密码"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="checkPass">
           <el-input
@@ -84,7 +116,10 @@
       { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
     ]"
         >
-          <el-input v-model="regForm.email" placeholder="邮箱"></el-input>
+          <el-input
+            v-model="regForm.email"
+            placeholder="邮箱"
+          ></el-input>
         </el-form-item>
         <!-- <el-form-item prop="telephone" >
           <el-input type="text" v-model="regForm.telephone" auto-complete="off" placeholder="手机号"></el-input>
@@ -94,7 +129,11 @@
         </el-form-item>-->
 
         <el-form-item style="width: 100%">
-          <el-button type="primary" @click.native.prevent="submitClick" style="width: 100%">注册</el-button>
+          <el-button
+            type="primary"
+            @click.native.prevent="submitClick"
+            style="width: 100%"
+          >注册</el-button>
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -156,10 +195,12 @@ export default {
         verification: ""
       },
       loading: false,
-      session: ""
+      session: "",
+      activeName:""
     };
   },
   methods: {
+    handleClick(){},
     checkPhone(rule, value, callback) {
       if (!/^1[34578]\d{9}$/.test(value)) {
         callback(new Error("请输入正确的手机号码!"));
@@ -168,32 +209,42 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(formName, "formName");
-
-          this.loading = true;
+          // console.log(formName, "formName");
+          // this.loading = true;
           if (formName === "loginForm") {
             let url = "/login";
             // console.log(url, "url");
+            this.$http.post("/login",{
+              username: 
+              this.loginForm.username,
+              password: 
+              this.loginForm.password
+            }).then((res)=>{
+              if (res.status == 200) {
+                this.$message({ type: "success", message: res.data });
+              }
+            })
+            
+            // postRequest(
+            //   url,
+            //   // this.loginForm
+            //   {
+            //     username: this.loginForm.username,
+            //     password: this.loginForm.password
+            //   }
+            // ).then(resp => {
+            //   this.loading = false;
+            //   if (resp.status == 200) {
+            //     //成功
+            //     var json = resp.data;
+            //     if (json.status == "success") {
+            //       this.$router.replace({ path: "/home" });
+            //     } else {
+            //       this.$message({ type: "error", message: resp.data });
+            //     }
+            //   }
+            // });
 
-            postRequest(
-              url,
-              // this.loginForm
-              {
-                username: this.loginForm.username,
-                password: this.loginForm.password
-              }
-            ).then(resp => {
-              this.loading = false;
-              if (resp.status == 200) {
-                //成功
-                var json = resp.data;
-                if (json.status == "success") {
-                  this.$router.replace({ path: "/home" });
-                } else {
-                  this.$message({ type: "error", message: resp.data });
-                }
-              }
-            });
           } else if (formName === "regForm") {
             postRequest("/reg", {
               username: this.loginForm.username,
