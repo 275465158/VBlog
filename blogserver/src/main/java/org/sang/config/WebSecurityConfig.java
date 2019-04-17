@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/category/all").authenticated()
                 .antMatchers("/admin/**").hasRole("超级管理员")///admin/**的URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")
-                .antMatchers("/hello","/reg").permitAll()
+                .antMatchers("/hello","/reg","getVisitorArticleDetail","getVisitorArticleList").permitAll()
                 .anyRequest().authenticated()//其他的路径都是登录后即可访问
                 .and().formLogin().loginPage("/login_page")
 
@@ -96,41 +96,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/blogimg/**","/index.html","/static/**");
     }
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+//        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
     @Bean
     AccessDeniedHandler getAccessDeniedHandler() {
         return new AuthenticationAccessDeniedHandler();
     }
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            //重写父类提供的跨域请求处理的接口
-//            public void addCorsMappings(CorsRegistry registry) {
-//                //添加映射路径
-//                registry.addMapping("/**")
-//                        //放行哪些原始域
-//                        .allowedOrigins("*")
-//                        //是否发送Cookie信息
-//                        .allowCredentials(true)
-//                        //放行哪些原始域(请求方式)
-//                        .allowedMethods("GET","POST", "PUT", "DELETE")
-//                        //放行哪些原始域(头部信息)
-//                        .allowedHeaders("*")
-//                        //暴露哪些头部信息（因为跨域访问默认不能获取全部头部信息）
-//                        .exposedHeaders("Header1", "Header2");
-//            }
-//        };
-//    }
     @Bean
     public CorsFilter corsFilter() {
         //1.添加CORS配置信息

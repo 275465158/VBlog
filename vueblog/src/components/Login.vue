@@ -81,7 +81,7 @@
           prop="email"
           :rules="[
       { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
     ]"
         >
           <el-input v-model="regForm.email" placeholder="邮箱"></el-input>
@@ -94,7 +94,7 @@
         </el-form-item>-->
 
         <el-form-item style="width: 100%">
-          <el-button type="primary" @click.native.prevent="submitClick" style="width: 100%">注册</el-button>
+          <el-button type="primary" @click="submitForm('regForm')" style="width: 100%">注册</el-button>
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -156,7 +156,6 @@ export default {
         verification: ""
       },
       loading: false,
-      session: "",
       activeName: ""
     };
   },
@@ -192,16 +191,17 @@ export default {
               });
           } else if (formName === "regForm") {
             postRequest("/reg", {
-              username: this.loginForm.username,
-              password: this.loginForm.password,
-              email: this.loginForm.email
+              username: this.regForm.username,
+              password: this.regForm.password,
+              email: this.regForm.email
             }).then(resp => {
               this.loading = false;
               if (resp.status == 200) {
                 //成功
                 var json = resp.data;
                 if (json.status == "success") {
-                  this.$router.replace({ path: "/login" });
+                  // this.$router.replace({ path: "/login" });
+                  this.$message({ type: "success", message: resp.data });
                 } else {
                   this.$message({ type: "error", message: resp.data });
                 }
