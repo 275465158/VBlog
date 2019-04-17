@@ -164,7 +164,7 @@ export default {
             if (resp.status == 200) {
               _this.articles = resp.data.articles;
               _this.totalCount = resp.data.totalCount;
-              this.$message({ type: "success", message: "数据完成!" });
+              this.$message({ type: "success", message: "数据加载完成!" });
             } else {
               _this.$message({ type: "error", message: "数据加载失败!" });
             }

@@ -7,6 +7,7 @@ import org.sang.utils.Util;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class VisitorService {
@@ -23,18 +24,18 @@ public class VisitorService {
 
         }else {
             //报错
-            throw new CommonBusinessException("您无权查看该文章");
+            throw new CommonBusinessException("获取失败,您无权查看该文章");
         }
     }
-//    public Article getVisitorArticleList(Long userId) {
-//
-//        if (){
-//            //通过验证
-//            return article;
-//
-//        }else {
-//            //报错
-//            throw new CommonBusinessException("您无权查看该文章");
-//        }
-//    }
+    public List<Article> getVisitorArticleList(Integer start,Integer count,Long userId) {
+
+        if (true){
+            //通过验证
+            return articleMapper.getArticleByState(1,start,count,userId,null);
+
+        }else {
+            //报错
+            throw new CommonBusinessException("获取文章列表失败，权限错误");
+        }
+    }
 }

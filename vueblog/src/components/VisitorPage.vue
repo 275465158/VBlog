@@ -266,11 +266,11 @@ export default {
     },
     // -------------------------------------------------------------------------------------------
     signup() {
-      this.loginAndRegActive = "login";
+      this.loginAndRegActive = "reg";
       this.loginDialogVisible = true;
     },
     signin() {
-      this.loginAndRegActive = "reg";
+      this.loginAndRegActive = "login";
       this.loginDialogVisible = true;
       // this.$router.push({
       //   path: "/login"
@@ -295,7 +295,7 @@ export default {
                   if (res.data.status === "success") {
                     this.$router.replace({ path: "/home" });
                   } else {
-                    this.$message({ type: "error", message: resp.data });
+                    this.$message({ type: "error", message: res.data });
                   }
                 }
               });
