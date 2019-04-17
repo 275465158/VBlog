@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@Configuration
+//@Configuration
 public class CORSConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -15,7 +15,7 @@ public class CORSConfiguration extends WebMvcConfigurerAdapter {
 //                .exposedHeaders("header1", "header2")
 //                .allowCredentials(false).maxAge(3600);
         registry.addMapping("/**").allowedHeaders("*")
-                .allowCredentials(false)
+                .allowCredentials(true)
                 .allowedMethods("PUT", "GET")
                 .allowedOrigins("http://127.0.0.1:8080").maxAge(3600);
     }

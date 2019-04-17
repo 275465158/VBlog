@@ -18,6 +18,9 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("超级管理员")///admin/**的URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_超级管理员")
                 .antMatchers("/hello","/reg").permitAll()
                 .anyRequest().authenticated()//其他的路径都是登录后即可访问
-                .and().formLogin().loginPage("/login_page")//这里好像没什么用
+                .and().formLogin().loginPage("/login_page")
 
                 .successHandler(new AuthenticationSuccessHandler() {
             @Override
@@ -78,7 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
                         PrintWriter out = httpServletResponse.getWriter();
                         out.write(e.toString());
-//                        out.write("{\"status\":\"error\",\"msg\":\"登录失败\"}");
                         out.flush();
                         out.close();
                     }
@@ -107,5 +109,51 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     AccessDeniedHandler getAccessDeniedHandler() {
         return new AuthenticationAccessDeniedHandler();
+    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            //重写父类提供的跨域请求处理的接口
+//            public void addCorsMappings(CorsRegistry registry) {
+//                //添加映射路径
+//                registry.addMapping("/**")
+//                        //放行哪些原始域
+//                        .allowedOrigins("*")
+//                        //是否发送Cookie信息
+//                        .allowCredentials(true)
+//                        //放行哪些原始域(请求方式)
+//                        .allowedMethods("GET","POST", "PUT", "DELETE")
+//                        //放行哪些原始域(头部信息)
+//                        .allowedHeaders("*")
+//                        //暴露哪些头部信息（因为跨域访问默认不能获取全部头部信息）
+//                        .exposedHeaders("Header1", "Header2");
+//            }
+//        };
+//    }
+    @Bean
+    public CorsFilter corsFilter() {
+        //1.添加CORS配置信息
+        CorsConfiguration config = new CorsConfiguration();
+        //放行哪些原始域
+        config.addAllowedOrigin("http://127.0.0.1:8080");
+        config.addAllowedOrigin("http://localhost:8080");
+
+//        http://192.168.1.117:8080
+        //是否发送Cookie信息
+        config.setAllowCredentials(true);
+        //放行哪些原始域(请求方式)
+        config.addAllowedMethod("*");
+        //放行哪些原始域(头部信息)
+        config.addAllowedHeader("*");
+        //暴露哪些头部信息（因为跨域访问默认不能获取全部头部信息）
+//        config.addExposedHeader("*");
+
+        //2.添加映射路径
+        UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
+        configSource.registerCorsConfiguration("/**", config);
+
+        //3.返回新的CorsFilter.
+        return new CorsFilter(configSource);
     }
 }

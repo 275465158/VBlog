@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let base = '';
+let base = 'http://localhost:8081';
 export const postRequest = (url, params) => {
   return axios({
     method: 'post',
@@ -12,11 +12,14 @@ export const postRequest = (url, params) => {
       for (let it in data) {
         ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
       }
+      console.log(url);
+
       return ret
     }],
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    },
+    withCredentials: false
   });
 }
 export const uploadFileRequest = (url, params) => {
@@ -52,10 +55,11 @@ export const deleteRequest = (url) => {
     url: `${base}${url}`
   });
 }
-export const getRequest = (url,params) => {
+export const getRequest = (url, params) => {
   return axios({
     method: 'get',
-    data:params,
+    data: params,
+    url: `${base}${url}`,
     transformRequest: [function (data) {
       let ret = ''
       for (let it in data) {
@@ -66,6 +70,6 @@ export const getRequest = (url,params) => {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    url: `${base}${url}`
+
   });
 }

@@ -1,20 +1,18 @@
 <template>
   <el-container class="home_container">
     <el-header>
-      <div class="home_title">V部落博客管理平台</div>
+      <div class="home_title">超级无敌方便好用fashion的博客管理平台</div>
       <div class="home_userinfoContainer">
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link home_userinfo">
-            {{currentUserName}}<i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
+            {{currentUserName}}
+            <i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="sysMsg">系统消息</el-dropdown-item>
             <el-dropdown-item command="MyArticle">我的文章</el-dropdown-item>
             <el-dropdown-item command="MyHome">个人主页</el-dropdown-item>
-            <el-dropdown-item
-              command="logout"
-              divided
-            >退出登录</el-dropdown-item>
+            <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -27,15 +25,9 @@
           style="background-color: #ECECEC"
           router
         >
-          <template
-            v-for="(item,index) in this.$router.options.routes"
-            v-if="!item.hidden"
-          >
-            <el-submenu
-              :index="index+''"
-              :key="index"
-            >
-            <template slot="title">
+          <template v-for="(item,index) in this.$router.options.routes" v-if="!item.hidden">
+            <el-submenu :index="index+''" :key="index">
+              <template slot="title">
                 <i :class="item.iconCls"></i>
                 <span>{{item.name}}</span>
               </template>
@@ -44,9 +36,7 @@
                 v-if="!child.hidden"
                 :index="child.path"
                 :key="child.path"
-              >
-                {{child.name}}
-              </el-menu-item>
+              >{{child.name}}</el-menu-item>
             </el-submenu>
           </template>
         </el-menu>
@@ -67,41 +57,51 @@
   </el-container>
 </template>
 <script>
-  import {getRequest} from '../utils/api'
-  export default{
-    methods: {
-      handleCommand(command){
-        var _this = this;
-        if (command == 'logout') {
-          this.$confirm('注销登录吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(function () {
-            getRequest("/logout")
-            _this.currentUserName = '游客';
-            _this.$router.replace({path: '/'});
-          }, function () {
-            //取消
-          })
-        }
-      }
-    },
-    mounted: function () {
-    
+import { getRequest } from "../utils/api";
+export default {
+  methods: {
+    handleCommand(command) {
       var _this = this;
-      getRequest("/currentUserName").then(function (msg) {
-        _this.currentUserName = msg.data;
-      }, function (msg) {
-        _this.currentUserName = '游客';
-      });
-    },
-    data(){
-      return {
-        currentUserName: ''
+      if (command == "logout") {
+        this.$confirm("注销登录吗?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(
+          function() {
+            getRequest("/logout");
+            _this.currentUserName = "游客";
+            _this.$router.replace({ path: "/" });
+          },
+          function() {
+            //取消
+          }
+        );
       }
+    },
+    getData() {
+      console.log("getData");
+      this.$http.get("/currentUserName").then(res => {
+        if (res.status == 200) {
+          console.log(res);
+          this.currentUserName = res.data;
+        } else {
+          this.currentUserName = "游客";
+          this.$message({ type: "error", message: resp.data });
+        }
+      });
     }
+  },
+
+  created: function() {
+    this.getData();
+  },
+  data() {
+    return {
+      currentUserName: ""
+    };
   }
+};
 </script>
 <style>
 .home_container {

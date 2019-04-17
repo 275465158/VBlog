@@ -9,46 +9,92 @@ import './utils/filter_utils.js'
 import VueParticles from 'vue-particles'
 import axios from 'axios';
 import { Message } from 'element-ui';
-Vue.prototype.$path = "http://localhost:8081/";
+// import store from './store'
 import Qs from 'qs';
 import VueAxios from 'vue-axios';
-var axios_instance = axios.create({
-    baseURL: "http://localhost:8081/",
-    transformRequest: [function(data) {
-        data = Qs.stringify(data);
-        return data;
-    }],
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    // withCredentials: true
-});
-axios_instance.interceptors.response.use(res => {
-    // console.log(res, "封装的");
+import Vuex from "vuex"
+// import { initMenu } from './utils/utils'
 
-    // if (res.data.code == 1002) {
-    //     // localStorage.removeItem('ms_username');
-    //     router.push('/login');
-    // } else if (res.data.code == 1001) {
-    //     Message.error(res.data.message);
-    // } else if (res.data.code == 1000) {
-    //     return res;
-    // } else if (res.data.code == 1000) {
-    //     return res;
-    // }
-    return res;
+
+
+Vue.use(Vuex)
+Vue.prototype.$path = "http://localhost:8081/";
+axios.defaults.withCredentials = true;
+var axios_instance = axios.create({
+  baseURL: "http://localhost:8081/",
+  // baseURL:"http://192.168.1.117:8081"
+  transformRequest: [function (data) {
+    data = Qs.stringify(data);
+    return data;
+  }],
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  // withCredentials: true
+});
+
+axios_instance.interceptors.response.use(res => {
+  // if (res.data.code == 1002) {
+  //     // localStorage.removeItem('ms_username');
+  //     router.push('/login');
+  // } else if (res.data.code == 1001) {
+  //     Message.error(res.data.message);
+  // } else if (res.data.code == 1000) {
+  //     return res;
+  // } else if (res.data.code == 1000) {
+  //     return res;
+  // }
+  return res;
 }, error => {
-    console.log(error.response);
-    Message.error('请求失败');
+  console.log(error.response);
+  Message.error('请求失败');
 })
 Vue.use(VueAxios, axios_instance);
-
 Vue.use(VueParticles)
-    //登录的粒子插件
+// const store = new Vuex.Store({
+//   state: {
+//     //公共
+//     comm: {
+//       loading: false,
+//       login: {
+//         memberId: '',
+//         userData: ''
+//       },
+//       indexConf: {
+//         isTab: false, //是否显示tab页
+//         isBack: false, //是否显示返回
+//         title: '' //标题
+//       }
+//     }
+//   },
+
+// router.beforeEach((to, from, next) => {
+//   if (to.name == 'Login') {
+//     next();
+//     return;
+//   }
+//   var name = store.state.user.name;
+//   if (name == '未登录') {
+//     if (to.meta.requireAuth || to.name == null) {
+//       next({ path: '/', query: { redirect: to.path } })
+//     } else {
+//       next();
+//     }
+//   }
+//   else {
+//     initMenu(router, store);
+//     // if (to.path == '/chat')
+//     //   store.commit("updateMsgList", []);
+//     next();
+//   }
+// }
+// )
+//登录的粒子插件
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 window.bus = new Vue();
 new Vue({
-    el: '#app',
-    router,
-    template: '<App/>',
-    components: { App }
+  el: '#app',
+  router,
+  // store,
+  template: '<App/>',
+  components: { App }
 })
